@@ -1,0 +1,17 @@
+{
+  "name": "budget-app-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "klkzl",
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^1.4.1",
+    "express": "^4.16.3",
+    "mocha": "^5.2.0",
+    "mongoose": "^5.2.7"
+  }
+}
