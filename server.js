@@ -6,15 +6,16 @@ const bodyParser = require('body-parser');
 
 app.listen(3000, function() {
     console.log('listening on 3000')
-})
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+});
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "GET, DELETE, POST, OPTIONS");
     next();
 });
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/testB');
@@ -25,9 +26,23 @@ mongoose.connection.once('open', function() {
     console.log('connection error: ', error);
 });
 
-app.get('/', (req, res) => {
+app.get('/incomes', (req, res) => {
     PositionModel.find({}, (err, data) => {
-        res.json(data);
+        const incomes = data.filter(position => {
+            return position.positionSign === 'inc'
+        })
+        res.json(incomes);
+        console.log(incomes);
+    })
+});
+
+app.get('/expenses', (req, res) => {
+    PositionModel.find({}, (err, data) => {
+        const expenses = data.filter(position => {
+            return position.positionSign === 'exp'
+        })
+        res.json(expenses);
+        console.log(expenses);
     })
 });
 
@@ -39,4 +54,11 @@ app.post('/', (req, res) => {
                 name: savedModel.positionName,
             });
         });
+});
+
+app.delete('/:id', (req, res) => {
+    // console.log(req.params);
+    PositionModel.remove({ _id: req.params.id}, function(){
+        res.json({});
+    })
 });
