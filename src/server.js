@@ -28,10 +28,16 @@ app.post('/', (req, res) => {
         });
 });
 
-app.delete('/:id', (req, res) => {
+app.delete('/position/:id', (req, res) => {
     PositionModel.deleteOne({ _id: req.params.id}, () => {
         res.json({});
     })
+});
+
+app.delete('/income', (req, res) => {
+    PositionModel.deleteMany({ positionSign: INCOME}, () => {
+        res.json({});
+    });
 });
 
 app.delete('/expenses', (req, res) => {
@@ -39,5 +45,3 @@ app.delete('/expenses', (req, res) => {
         res.json({});
     });
 });
-
-// db.getCollection('positionmodels').aggregate([{ $match: {positionSign : "exp" }}])
