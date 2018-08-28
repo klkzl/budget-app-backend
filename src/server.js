@@ -1,23 +1,20 @@
 const app = require('./appConfig');
 const PositionModel = require('./models/position');
 
+const INCOME = 'inc';
+const EXPENSE = 'exp';
+
 app.get('/incomes', (req, res) => {
     PositionModel.find({}, (err, data) => {
-        const incomes = data.filter(position => {
-            return position.positionSign === 'inc'
-        })
+        const incomes = data.filter(position => position.positionSign === INCOME);
         res.json(incomes);
-        console.log(incomes);
     })
 });
 
 app.get('/expenses', (req, res) => {
     PositionModel.find({}, (err, data) => {
-        const expenses = data.filter(position => {
-            return position.positionSign === 'exp'
-        })
+        const expenses = data.filter(position => position.positionSign === EXPENSE);
         res.json(expenses);
-        console.log(expenses);
     })
 });
 
@@ -32,13 +29,13 @@ app.post('/', (req, res) => {
 });
 
 app.delete('/:id', (req, res) => {
-    PositionModel.deleteOne({ _id: req.params.id}, function(){
+    PositionModel.deleteOne({ _id: req.params.id}, () => {
         res.json({});
     })
 });
 
 app.delete('/expenses', (req, res) => {
-    PositionModel.deleteMany({ positionSign: "exp"}, function() {
+    PositionModel.deleteMany({ positionSign: EXPENSE}, () => {
         res.json({});
     });
 });
